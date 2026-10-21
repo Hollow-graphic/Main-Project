@@ -147,3 +147,32 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+/anims
+/assistant
+/.vscode
+/__pycache__
+/backup
+/build
+/data
+/docs
+/discord/savedata
+/epi
+/extention
+/gamebanana
+/lib
+/other
+/venv
+/vite-server
+/utility
+/ynstrument
+/zCraftRando
+/zTemp
+/zServerPlayBatch
+/zMinecraftRando
+/test
+/discord
+/Folderchanger
+/minecraft
+/savedata
+/ServerMinecraft
+/web/PKserver

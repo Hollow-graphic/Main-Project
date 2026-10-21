@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	background: theme(colors.zinc.900);
+	color: white;
+	font-family: 'Renogare', sans-serif;
+}
+
+img {
+	height: 95%;
+	width: 95%;
+  	image-rendering: pixelated;
+}
+
+.Project-tab {
+	width: 100%; 
+	scroll-behavior: smooth;
+	padding: 5px;
+}
+.bookmark {
+	transition: all 0.2s ease-in-out;
+}
+
+@font-face {
+    font-family: 'Renogare';
+    src: url('fonts/Renogare-Regular.otf') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Monaco-bold';
+    src: url('fonts/Monaco+Bold.otf') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+

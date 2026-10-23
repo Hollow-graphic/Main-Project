@@ -95,6 +95,10 @@ def save_url():
         return {"status": "ok", "saved": url}, 200
     return {"status": "error"}, 400
 
+@app.route("/ping", methods=["GET"])
+def ping():
+    return jsonify(200)
+
 # ---------- PAGE PRINCIPALE ----------
 @app.route('/')
 def serve_index():

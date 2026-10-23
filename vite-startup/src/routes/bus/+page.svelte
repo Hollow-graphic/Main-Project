@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Header from '$lib/components/Header.svelte';
+	import ReturnButton from "$lib/components/ReturnButton.svelte";
 
 	let isTabOpen = $state(false)
 	let onTab = $state("about me")
@@ -17,7 +18,7 @@
 
 <!-- Tab div -->
 <div  class="fixed m-2 bg-zinc-800/80 rounded-lg shadow-lg z-20">
-	<button onclick={() => window.location.href = window.location.href.slice(0, -4)} style={"font-size: xx-large;"}> exit </button>
+	<button onclick={() => window.location.href = window.location.href.slice(0, -4)} style={"font-size: xx-large;"}> return </button>
 	{#if isTabOpen}
 	<div
 		class="fixed text-zinc-50 bg-zinc-800/80 rounded-lg shadow-lg m-1" 
@@ -43,8 +44,4 @@
     >
         <source src="/img/PaintBus.mp4" type="video/mp4" />
     </video>
-	<!-- Main Tab-->
-	{#if onBigTab === "Main"}
-	{:else}
-	{/if}
 </main>

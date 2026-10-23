@@ -33,9 +33,20 @@ img {
 
 @font-face {
     font-family: 'Monaco-bold';
-    src: url('fonts/Monaco+Bold.otf') format('woff2');
-    font-weight: 400;
+    src: url('/fonts/Monaco+.otf') format('opentype');
+    font-weight: 500;
     font-style: normal;
     font-display: swap;
 }
 
+
+.GlichedText {
+    font-family: 'Minecraft-enchantment', monospace;
+}
+@font-face {
+    font-family: 'Minecraft-enchantment';
+    src: url('fonts/minecraft-enchantment.ttf') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}

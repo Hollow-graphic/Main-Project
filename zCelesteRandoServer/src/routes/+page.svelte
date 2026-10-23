@@ -214,7 +214,7 @@
 		style={`height:90%; width:20%`}
 	> 
 		<div class="bg-zinc-700 px-2 py-1">
-			ARCHIPELGO <br>
+			ARCHIPELAGO <br>
 			<input type="text" class="bg-zinc-600 px-2 py-1" id="APIP" placeholder="IP/Port" autocomplete="off" value="localhost:38281"/>
 			<input type="text" class="bg-zinc-600 px-2 py-1" id="APSlot" placeholder="SlotName" autocomplete="off" value="HollowCC"/>
 			<input type="text" class="bg-zinc-600 px-2 py-1" id="APPassword" placeholder="Password" autocomplete="off" />

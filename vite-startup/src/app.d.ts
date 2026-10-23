@@ -8,9 +8,4 @@ declare namespace App {
 		};
 		context: ExecutionContext;
 	}
-
-	// interface Locals {}
-	// interface Error {}
-	// interface Session {}
-	// interface Stuff {}
 }

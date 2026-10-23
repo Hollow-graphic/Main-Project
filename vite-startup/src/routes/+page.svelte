@@ -1,25 +1,38 @@
 <script lang="ts">
+    import { onMount } from 'svelte';
 	import Header from '$lib/components/Header.svelte';
-    import Project from '$lib/components/Project.svelte';
-    import Block from '$lib/components/Block.svelte';
-    import GlichedText from '$lib/components/GlichedText.svelte';
+	import Project from '$lib/components/Project.svelte';
+	import Block from '$lib/components/Block.svelte';
+	import GlichedText from '$lib/components/GlichedText.svelte';
 	import { clickToCopy } from "./clickToCopy.js";
-    import Pocket from '$lib/components/Pocket.svelte';
-    import { goto } from '$app/navigation';
+	import Pocket from '$lib/components/Pocket.svelte';
+	import DailyReport from '$lib/components/DailyReport.svelte';
+	import { goto } from '$app/navigation';
 
-	let isTabOpen = $state(false)
-	let onTab = $state("about me")
-	let onBigTab = $state("Main")
-	let isMuted = $state(true)
+	let isTabOpen = $state(false);
+	let onTab = $state("about me");
+	let onMainTab = $state("Main");
+	let isMuted = $state(true);
 	let video: HTMLVideoElement;
+	let isPythonUp = $state(false);
 
-	const Tabs = {"Main":["About ME", "Project", "Links"], "Journal":["DailyReport", "Memories"]}
+    async function getPing() {
+        const response = await fetch("/api/pingpython");
+        const data = await response.json();
+		console.log(data);
+		if (data == 200) {
+			isPythonUp = true;
+		}
+    }
+
+	onMount(() => {
+        getPing();
+    });
 </script>
 
 <svelte:window
 	//onkeydown={(ev) => {if (ev.key === 'z' && (ev.ctrlKey || ev.metaKey)) undo();}}
 />
-
 
 <!-- Tab div -->
 <div  class="fixed m-2 bg-zinc-800/80 rounded-lg z-20">
@@ -32,14 +45,12 @@
 	</div>
 	{/if}
 </div>
-
 <div class="fixed bg-zinc-800/80 bottom-0 left-0 m-2 rounded-lgz-20 text-lg">
 	<button onclick={() => {isMuted = !isMuted; video.muted = isMuted}}> Music: {isMuted? "OFF" : "ON"} </button>
 </div>
-<button class="fixed bg-zinc-800/80 bottom-0 right-0 m-2 rounded-lg z-20 text-lg h-24 w-24 item-">
+<button onclick={() => goto("/terminal")} class="fixed bg-zinc-800/80 bottom-0 right-0 m-2 rounded-lg z-20 text-lg h-24 w-24 item-">
 	<img class="flex p-1" alt="console" src="/img/console.png" height="100%" width="100%"/>
 </button>
-
 
 <main class="flex items-center flex-col h-full w-full absolute">
 	<video
@@ -55,16 +66,16 @@
 	<div class="z-10 p-8">
 		<Header></Header>
 	</div>
-	<button class="absolute border w-24 h-48  translate-y-[62vh] translate-x-[23vh]" onclick={() => goto("/bus")} aria-label="bus">
+	<button class="absolute w-24 h-48  translate-y-[62vh] translate-x-[23vh]" onclick={() => goto("/bus")} aria-label="bus">
 	</button>
-	<!-- Main Tab-->
-	{#if onBigTab === "Main"}
-		<button class="absolute bg-zinc-700/0 h-[80vh] w-24 left-0 bottom-0 rotate-[-3deg]" onclick={() => {onBigTab = "Journal"; onTab = "DailyReport"}}>
+	{#if onMainTab === "Main"} <!-- Main Tab-->
+		<button class="absolute bg-zinc-700/0 h-[80vh] w-24 left-0 bottom-0 rotate-[-3deg]" onclick={() => {onMainTab = "Journal"; onTab = "DailyReport"}}>
 			<img class="absolute z-4 h-full w-auto max-w-none object-contain -translate-x-[1090px] translate-y-[76px]" alt="github" src="/img/page.png"/>
 			<img class="absolute z-30 h-full w-auto max-w-none object-contain -translate-x-[1090px] translate-y-[64px]" alt="github" src="/img/journal/sidename.png"/>
 			<img class="z-5 h-full w-auto max-w-none object-contain -translate-x-[1100px] translate-y-[64px]" alt="github" src="/img/cover.png"/>
 		</button>
 		<div class="flex gap-8 z-10">
+			{#if false}
 			<div class="flex bg-zinc-900/80 w-96 h-[60vh] rounded-lg shadow-lg shadow-rose-500/50 grid grid-rows-4">
 				<div class="rounded-lg">
 					<div class="grid grid-cols-2">
@@ -76,11 +87,15 @@
 					<GlichedText text="this is a text message randomcharacter randomcharacter randomcharacter"></GlichedText>
 				</Block>
 			</div >
+			{/if}
 			<div class="flex-col h-[60vh] bg-zinc-900/80 gap-4 rounded-lg shadow-lg shadow-rose-500/50 w-[512px]">
 				<div class="p-2">
 					<button class="bg-zinc-700/50 rounded-lg p-1 inset-shadow-sm inset-shadow-rose-500" onclick={() => {onTab = "About Me"}}> About Me </button>
 					<button class="bg-zinc-700/50 rounded-lg p-1 inset-shadow-sm inset-shadow-rose-500" onclick={() => {onTab = "My Project"}}> Project </button>
 					<button class="bg-zinc-700/50 rounded-lg p-1 inset-shadow-sm inset-shadow-rose-500" onclick={() => {onTab = "Links"}}> Links </button>
+					{#if isPythonUp}
+						<button class="bg-zinc-700/50 rounded-lg p-1 inset-shadow-sm inset-shadow-rose-500" onclick={() => {onTab = "PyServer"}}>PyServer</button>
+					{/if}
 				</div>
 				{#if onTab === "My Project"}
 					<div class="Project-tab rounded-lg inligne h-200">
@@ -107,7 +122,10 @@
 							<img class="flex" alt="steam" src="/logo/steam.png" height="100%" width="100%"/>
 						</a>
 					</div>
-
+				{:else if onTab === "PyServer"}
+					<div class="Project-tab rounded-lg inligne h-200">
+						<Project title="Lol build" text="help you build your item" link="lol"></Project>
+					</div>
 				{:else}
 					<div class="Project-tab h-[50vh] rounded-lg inligne overflow-visible overflow-y-auto ">
 						<Block>
@@ -121,13 +139,13 @@
 				{/if}
 			</div>
 		</div>
-	{:else}
-		<button class="absolute bg-zinc-700/80 shadow-lg shadow-rose-500/50 h-[80vh] w-24 right-0 bottom-0" onclick={() => {onBigTab = "Main"; ontab = "About Me"}}>
+	{:else} <!-- Journal -->
+		<button class="absolute bg-zinc-700/80 shadow-lg shadow-rose-500/50 h-[80vh] w-24 right-0 bottom-0" onclick={() => {onMainTab = "Main"; onTab = "About Me"}} aria-label="journal_cover">
 		</button>
 		<div class="flex gap-8">
 			<img class="absolute z-30 rotate-[-1deg] h-full w-auto max-w-none object-contain -translate-x-[1000px] -translate-y-[10vh] pointer-events-none" alt="github" src="/img/page.png"/>
 			<div class="absolute bottom-0 left-0 z-20 grid grid-rows-2">
-				<button class="h-48 w-[72] translate-x-[145vh] translation-y-[192px] z-20" onclick={() => onTab = "Achivements"}>
+				<button class="h-48 w-[72] translate-x-[145vh] translation-y-[192px] z-20" onclick={() => onTab = "Achievements"}>
 					<img class="bookmark flex z-20 hover:translate-x-[20px] hover:translate-y-[2px]" alt="github" src="/img/journal/Memories.png" height="100%" width="100%"/>
 				</button>
 				<button class="h-48 w-[72] translate-x-[145vh] translation-y-[48px] z-20" onclick={() => onTab = "DailyReport"}>
@@ -136,28 +154,31 @@
 			</div>
 			<div class="absolute bottom-0 left-0  z-40 h-[90vh] w-[140vh] rotate-[-1deg]">
 				{#if onTab === "DailyReport"}
-					<div class="top-0 left-0 m-4 text-5xl text-zinc-900 translate-x-[10vh]">
-						DAILY REPORT
-					</div>
-					<div class="bg-zinc-800/10 h-96 w-[118vh] translate-y-[64px] grid grid-cols-4 gap-8">
-						<Pocket title="Walking" cart="a"></Pocket>
+					<div class="top-0 left-0 m-4 translate-x-[10vh]">
+						<div class="text-5xl text-zinc-900">
+							DAILY REPORT
+						</div>
+						<div class="bg-zinc-800/10 h-96 w-[118vh] translate-y-[64px] grid grid-cols-4 gap-8">
+							<DailyReport day="day-20-10-2026"></DailyReport>
+							<DailyReport day="day-21-10-2026"></DailyReport>
+						</div>
 					</div>
 				{:else}
-				<div class="top-0 left-0 m-4 translate-x-[10vh]">
-					<div class="text-5xl text-zinc-900">
-						MEMORIES
+					<div class="top-0 left-0 m-4 translate-x-[10vh]">
+						<div class="text-5xl text-zinc-900">
+							MEMORIES
+						</div>
+						<div class="bg-zinc-800/10 h-96 w-[118vh] translate-y-[64px] grid grid-cols-4 gap-8">
+							<Pocket title="Walking" cart="a"></Pocket>
+							<Pocket title="Cloud Jumping" cart="b"></Pocket>
+							<Pocket title="Playing" cart="c"></Pocket>
+							<Pocket title="Final Goodbye" cart="d"></Pocket>
+							<Pocket title="" cart="default"></Pocket>
+							<Pocket title="" cart="default"></Pocket>
+							<Pocket title="" cart="default"></Pocket>
+							<Pocket title="" cart="default"></Pocket>
+						</div>
 					</div>
-					<div class="bg-zinc-800/10 h-96 w-[118vh] translate-y-[64px] grid grid-cols-4 gap-8">
-						<Pocket title="Walking" cart="a"></Pocket>
-						<Pocket title="Cloud Jumping" cart="b"></Pocket>
-						<Pocket title="Playing" cart="c"></Pocket>
-						<Pocket title="Final Goodbye" cart="d"></Pocket>
-						<Pocket title="" cart="default"></Pocket>
-						<Pocket title="" cart="default"></Pocket>
-						<Pocket title="" cart="default"></Pocket>
-						<Pocket title="" cart="default"></Pocket>
-					</div>
-				</div>
 				{/if}
 			</div>
 		</div>
